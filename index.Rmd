@@ -9,6 +9,5 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
 ### Homework 1:
 [Wasp Narrative Flowchart](hw1.html)
