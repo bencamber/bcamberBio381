@@ -11,6 +11,5 @@ graph TD
   F[HeLa Lab]-->|cancer research|E
 ```
 
-![Alt text](C:\Users\PC\Desktop\Projects\bcamberBio381\IMG-1477.JPG)
+![alt](https://bencamber.github.io/bcamberBio381/IMG-1477.JPG)
 
-Why the hell won't this image load but the other one will? 
