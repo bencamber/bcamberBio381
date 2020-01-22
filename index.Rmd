@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+![Alt text](C:\Users\PC\Desktop\Projects\bcamberBio381\Headshot- Ben.PNG)
 
 ### Homework 1:
 [Wasp Narrative Flowchart](hw1.html)
