@@ -11,3 +11,4 @@ graph TD
   F[HeLa Lab]-->|cancer research|E
 ```
 
+![Path to Dissertation](C:\Users\PC\Downloads\IMG-1477.JPG)
