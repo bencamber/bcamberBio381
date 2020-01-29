@@ -10,6 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Problem 1:
+Regex finds instances of two or more spaces, but not line breaks.
+
 #### Find: 
 ``` 
 \s{2,}
@@ -23,6 +25,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ## Problem 2:
+Regex captures first name, last name, and all the rest. Order of names reversed and all the rest is put in parentheses.
+
 #### Find:
 ```
 (\w+), (\w+), (.*)
@@ -34,9 +38,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ## Problem 3:
+Regex finds all instances of .mp3 followed by a space, captures .mp3, and replaces the space with a new line.
+
 #### Find:
 ```
-.mp3(\s)
+(.mp3)\s
 ```
 #### Replace:
 ```
@@ -44,7 +50,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-## Problem 4
+## Problem 4:
+Regex captures numbers with 2 or more digits followed by a space, then captures everything before .mp3 as well as .mp3 so they can be replaced in a different order. 
+
 #### Find:
 ```
 (\d{2,}) (.*)(.mp3)
@@ -57,6 +65,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ## Problem 5:
+Regex captures the first letter of the first word, the whole second word, and the last number with any number of digits and eliminates everything else. 
+
 #### Find:
 ```
 (\w)\w+,(\w+),\d+.\d,(\d+)
@@ -68,6 +78,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ## Problem 6:
+Regex captures the first letter of the first word, the first four letters of the second word, and the final comma and number, then eliminates everything else. 
+
 #### Find:
 ```
 (\w{1})\w*,(\w{4})\w*,\d*.\d(,\d*)
@@ -79,6 +91,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ## Problem 7:
+Regex captures the first three letters of the first word, the first three letters of the second word, and the comma followed by everything else, then eliminates the leftovers. 
+
 #### Find:
 ```
 (\w{3})\w*,(\w{3})\w*(,.*)
