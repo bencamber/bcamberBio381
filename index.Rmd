@@ -11,5 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 ![Alt text](https://bencamber.github.io/bcamberBio381/Headshot- Ben.PNG)
 
-### Homework 1:
+### Homework 1: Creating index and html link to homework
 [Wasp Narrative Flowchart](hw1.html)
+
+### Homework 3: regular expression puzzles
+[Regular expression puzzles](hw3.html)
