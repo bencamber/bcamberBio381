@@ -1,0 +1,85 @@
+---
+title: "hw4"
+author: "Ben Camber"
+date: "2/5/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Suppose x = 1.1, a = 2.2, and b = 3.3. Assign each expression to the value of the variable zand print the value stored in z.
+```{r}
+x=1.1
+a=2.2
+b=3.3
+z<-x^(a^b)
+print(z)
+z<-(x^a)^b
+print(z)
+z<-(3*x^3)+(2*x^2)+1
+print(z)
+```
+2. Using the ```rep``` and ```seq``` functions, create the following vectors:
+```{r}
+a<-c(seq(from = 1, to = 8, by = 1),seq(from = 7, to = 1, by = -1))
+print(a)
+
+b<-rep(1:5, times = 1:5)
+print(b)
+
+c<-rep(5:1, times = 1:5)
+print(c)
+```
+
+3. Create a vector of two random uniform numbers. In a spatial map, these can be interpreted as x and y coordinates that give the location of an individual (such as a marked forest tree in a plot that has been mapped). Using one of R’s inverse trigonometry functions (asin(), acos(), or atan()), convert these numbers into polar coordinates (If you don’t know what polar coordinates are, read about them on the web or in your calculus textbook).
+
+```{r}
+pol<-runif(2)
+print(pol)
+rad <- sqrt(pol[1]^2 + pol[2]^2)
+print(rad)
+theta<-atan(pol[2]/pol[1])
+print(theta)
+
+
+
+```
+
+4. Suppose that queue <- c("sheep", "fox", "owl", "ant") and that queue represents the animals that are lined up to enter Noah’s Ark, with the sheep at the front of the line. Using R expressions, update the queue successively as
+
+the serpent arrives;
+the sheep enters the ark;
+the donkey arrives and talks his way to the front of the line;
+the serpent gets impatient and leaves;
+the owl gets bored and leaves;
+the aphid arrives and the ant invites him to cut in line.
+Finally, determine the position of the aphid in the line.
+
+```{r}
+queue <- c("sheep","fox","owl","ant")
+print(queue)
+queue[5] <- "serpent"
+print(queue)
+queue <- queue[-1]
+print(queue)
+queue <- c("donkey",queue)
+print(queue)
+queue <- queue[-5]
+print(queue)
+queue <- queue[-3]
+print(queue)
+queue <- append(queue, "aphid", after =2)
+print(queue)
+aphid <- which("aphid" == queue)[[1]]
+print(aphid)
+```
+
+5. Use R to create a vector of all of the integers from 1 to 100 that are not divisible by 2, 3, or 7.
+
+```{r}
+Filter(function(i){all(i %% c(2,3,7) != 0)}, seq(100))
+
+
+```

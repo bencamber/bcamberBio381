@@ -16,3 +16,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Homework 3: regular expression puzzles
 [Regular expression puzzles](hw3.html)
+
+### Homework 4: Vectors in R
+[vectors](hw4.html)
