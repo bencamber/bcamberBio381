@@ -14,8 +14,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Homework 1: Creating index and html link to homework
 [Wasp Narrative Flowchart](hw1.html)
 
-### Homework 3: regular expression puzzles
+### Homework 3: Regular expression puzzles
 [Regular expression puzzles](hw3.html)
 
 ### Homework 4: Vectors in R
-[vectors](hw4.html)
+[Vectors](hw4.html)
+
+### Homework 5: Matrices, lists, and data frames
+[matricesListsDataframes](hw5.html)

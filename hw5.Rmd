@@ -1,0 +1,53 @@
+---
+title: "hw5"
+author: "Ben Camber"
+date: "2/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### 1. Variable matrix
+```{r}
+n_dims<-sample(3:10,1)
+z<-c(1:n_dims^2)
+zip<-sample(z)
+m<-matrix(data=zip,nrow=n_dims,byrow=TRUE)
+print(m)
+m<-t(m)
+print(m)
+print(sum(m[1,]))
+print(sum(m[n_dims,]))
+
+eigenVal_m<-eigen(m,only.values=TRUE)
+typeof(eigenVal_m[[1]])
+
+```
+
+#### 2. Creating a list of matrices
+```{r}
+my_matrix<-matrix(c(runif(16)),nrow=4)
+my_logical<-c(runif(100)>.5)
+my_letters<-c(letters[1:26])
+lust<-list(my_matrix,
+           my_logical,
+           my_letters)
+lusttypes<-c(typeof(lust[[1]]),typeof(lust[[2]]),typeof(lust[[3]]))
+print(lusttypes)
+print(typeof(lusttypes))
+
+```
+
+#### 3. Data frames
+```{r}
+my_unis<-runif(26,min=0,max=10)
+my_letters<-c(sample(LETTERS[1:26]))
+dframe<-data.frame(my_unis,my_letters,stringsAsFactors = FALSE)
+dframe[sample(nrow(dframe), 4), 1]<-NA
+print(which(is.na(dframe)))
+dframe<-dframe[order(dframe$my_letters),]
+print(dframe)
+print(mean(dframe$my_unis,na.rm=TRUE))
+```
