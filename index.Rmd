@@ -22,3 +22,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Homework 5: Matrices, lists, and data frames
 [matricesListsDataframes](hw5.html)
+
+### Homework 6: Simulating and fitting data distributions
+[simulating and fitting distributions](hw6.html)

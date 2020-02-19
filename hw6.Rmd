@@ -1,0 +1,142 @@
+---
+title: "hw6"
+author: "Ben Camber"
+date: "2/19/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Loading relevant libraries
+```{r}
+library(ggplot2) # for graphics
+library(MASS) # for maximum likelihood estimation
+library(tidyr)
+```
+
+### Importing dataset
+##### This dataset is the percent canopy coverage for various sites within habitat categories in Costa Rica. Sites range from forest interior to palm oil plantations.
+
+```{r}
+canopy_cover <- read.table("canopy_cover.csv",header=TRUE,sep=",", stringsAsFactors=FALSE)
+str(canopy_cover)
+summary(canopy_cover)
+
+```
+### Plot histogram of data
+```{r}
+z<-canopy_cover$CanopyCover
+p1 <- ggplot(data=canopy_cover, aes(x=CanopyCover, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2)
+print(p1)
+```
+### Adding empirical density curve
+```{r}
+p1 <-  p1 +  geom_density(linetype="dotted",size=0.75)
+p1
+```
+
+
+### Getting maximum likelihood for normal distribution
+```{r}
+normPars <- fitdistr(canopy_cover$CanopyCover,"normal")
+print(normPars)
+str(normPars)
+normPars$estimate["mean"] # note structure of getting a named attribute
+```
+### Plot normal probability density
+```{r}
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(canopy_cover$CanopyCover),len=length(canopy_cover$CanopyCover))
+
+ stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(canopy_cover$CanopyCover), args = list(mean = meanML, sd = sdML))
+ p1 + stat
+```
+
+
+
+### Plotting exponential probability density
+```{r}
+expoPars <- fitdistr(canopy_cover$CanopyCover,"exponential")
+rateML <- expoPars$estimate["rate"]
+
+stat2 <- stat_function(aes(x = CanopyCover, y = ..y..), fun = dexp, colour="blue", n = length(canopy_cover$CanopyCover), args = list(rate=rateML))
+ p1 + stat + stat2
+```
+
+### Plotting uniform density probability
+```{r}
+stat3 <- stat_function(aes(x = CanopyCover, y = ..y..), fun = dunif, colour="darkgreen", n = length(canopy_cover$CanopyCover), args = list(min=min(canopy_cover$CanopyCover), max=max(canopy_cover$CanopyCover)))
+ p1 + stat + stat2 + stat3
+```
+
+
+### Plot Gamma probability density
+```{r}
+gammaPars <- fitdistr(canopy_cover$CanopyCover,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = CanopyCover, y = ..y..), fun = dgamma, colour="brown", n = length(canopy_cover$CanopyCover), args = list(shape=shapeML, rate=rateML))
+ p1 + stat + stat2 + stat3 + stat4
+```
+
+### Plot Beta probability density
+```{r}
+pSpecial <- ggplot(data=canopy_cover, aes(x=CanopyCover/(max(CanopyCover + 0.1)), y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted")
+
+betaPars <- fitdistr(x=canopy_cover$CanopyCover/max(canopy_cover$CanopyCover + 0.1),start=list(shape1=1,shape2=2),"beta")
+shape1ML <- betaPars$estimate["shape1"]
+shape2ML <- betaPars$estimate["shape2"]
+
+statSpecial <- stat_function(aes(x = CanopyCover, y = ..y..), fun = dbeta, colour="orchid", n = length(canopy_cover$CanopyCover), args = list(shape1=shape1ML,shape2=shape2ML))
+pSpecial + statSpecial
+```
+
+### It looks like the normal distribution fits the best. Now it's time to get maximum likelihood parameters for a normal distribution and simulate a new dataset with those parameters. 
+```{r}
+normPars <- fitdistr(canopy_cover$CanopyCover,"normal")
+print(normPars)
+str(normPars)
+normPars$estimate["mean"]
+
+cansim<-rnorm(n=20,mean=70.285,sd=14.329245)
+cansim<-data.frame(1:20,cansim)
+
+```
+
+### Plotting simulated normal distribution probability density
+```{r}
+psim <- ggplot(data=cansim, aes(x=cansim, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
+
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(cansim),len=dim(cansim)[1])
+
+stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = dim(cansim)[1], args = list(mean = meanML, sd = sdML))
+ psim + stat
+ 
+```
+### Comparison of original and simulated data
+```{r}
+z<-canopy_cover$CanopyCover
+p1 <- ggplot(data=canopy_cover, aes(x=CanopyCover, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2)
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(canopy_cover$CanopyCover),len=length(canopy_cover$CanopyCover))
+
+ stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(canopy_cover$CanopyCover), args = list(mean = meanML, sd = sdML))
+ p1 + stat
+ cowplot::plot_grid(p1+stat,psim+stat)
+```
