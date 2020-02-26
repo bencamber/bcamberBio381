@@ -1,0 +1,66 @@
+---
+title: "hw7"
+author: "Ben Camber"
+date: "2/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Creating fake data sets to explore hypotheses
+1. Go back to your “thinking on paper” exercise, and decide on a pattern that you might expect in your experiment if a specific hypothesis were true.
+*I hypothesize that Leptopilina boulardi strains Lb17 and G486 will have different mean encapsulation rates and that that distribution of encapsulation rates will follow a normal distribution, and G486 will have more variance than Lb17.*
+
+2. To start simply, assume that the data in each of your treatment groups follow a normal distribution. Specify the sample sizes, means, and variances for each group that would be reasonable if your hypothesis were true.
+```{r}
+lb17<-rnorm(n=1000,mean=90,sd=5)
+g486<-rnorm(n=1000,mean=80,sd=7.5)
+```
+3. Using the methods we have covered in class, write code to create a random data set that has these attributes. Organize these data into a data frame or tibble with the appropriate structure.
+```{r}
+wasps<-data.frame(lb17,g486,stringsAsFactors = FALSE)
+library(tidyr)
+wasps2<-gather(wasps,strain,encap_rate)
+head(wasps2)
+
+```
+4. Now write code to analyze the data (probably as an ANOVA or regression analysis, but possibly as a logistic regression or contingency table analysis. Write code to generate a useful graph of the data. 
+```{r}
+encap_model<-aov(encap_rate~strain,data=wasps2)
+summary(encap_model)
+library(ggplot2)
+encap_plot<-ggplot(data=wasps2,aes(x=strain,y=encap_rate,fill=strain)) + 
+  geom_boxplot()
+encap_plot
+```
+5. Try running your analysis multiple times to get a feeling for how variable the results are with the same parameters, but different sets of random numbers.
+
+6. Now begin adjusting the means of the different groups. Given the sample sizes you have chosen, how small can the differences between the groups be (the “effect size”) for you to still detect a significant pattern (p < 0.05)? *With a difference in mean of 9.9 and sd of 5 and 7.5 respectively, the model found a significant difference between the strains 7/10 times.*
+```{r}
+lb17<-rnorm(n=1000,mean=90,sd=5)
+g486<-rnorm(n=1000,mean=89.1,sd=7.5)
+wasps<-data.frame(lb17,g486,stringsAsFactors = FALSE)
+wasps2<-gather(wasps,strain,encap_rate)
+encap_model<-aov(encap_rate~strain,data=wasps2)
+summary(encap_model)
+encap_plot<-ggplot(data=wasps2,aes(x=strain,y=encap_rate,fill=strain)) + 
+  geom_boxplot()
+encap_plot
+```
+
+7.Alternatively, for the effect sizes you originally hypothesized, what is the minimum sample size you would need in order to detect a statistically significant effect? Again, run the model a few times with the same parameter set to get a feeling for the effect of random variation in the data. *With only 5 observations of the encapsulation rate of each strain, there was a signficant difference in the strains 8/10 runs of the model.* 
+
+```{r}
+lb17<-rnorm(n=5,mean=90,sd=5)
+g486<-rnorm(n=5,mean=80,sd=7.5)
+wasps<-data.frame(lb17,g486,stringsAsFactors = FALSE)
+wasps2<-gather(wasps,strain,encap_rate)
+encap_model<-aov(encap_rate~strain,data=wasps2)
+summary(encap_model)
+encap_plot<-ggplot(data=wasps2,aes(x=strain,y=encap_rate,fill=strain)) + 
+  geom_boxplot()
+encap_plot
+```
+
