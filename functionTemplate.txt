@@ -1,0 +1,14 @@
+##################################################
+# FUNCTION: functionName
+# one line description
+# input: x
+# output: y
+#------------------------------------------------
+functionName<-function() {
+
+
+return("testing...functionName")
+}
+#################################################
+
+pseudocode: list of instructions for our program

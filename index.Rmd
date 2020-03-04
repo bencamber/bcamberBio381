@@ -28,3 +28,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Homework 7: Creating fake data sets to explore hypotheses
 [fake data exploration](hw7.html)
+
+### Homework 8: Data manipulation using the dplyr package
+[dplyr](hw8.html)
