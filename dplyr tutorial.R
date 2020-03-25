@@ -97,3 +97,99 @@ summarize(swGenders,meanHeight=mean(height, na.rm=TRUE), number=n())
 swClean %>%
   group_by(gender) %>%
   summarize(meanheight=mean(height),number=n())
+
+
+# dplyr lesson 2 ----------------------------------------------------------
+
+### March 5 2020
+### Exporting and importing data
+library(dplyr)
+data(starwars)
+starwars1<-select(starwars,name:species)
+head(starwars1)
+
+## write.table
+write.table(starwars1,file = "StarwarsNamesInfo.csv", row.names=F,sep=",")
+data<-read.csv(file="StarwarsNamesInfo.csv",header=TRUE,sep=",",stringsAsFactors = FALSE,comment.char="#")
+head(data)
+data<-read.table(file="StarwarsNamesInfo.csv",header=TRUE,sep=',',stringsAsFactors = F)
+class(data) # dplyr doesn't automatically turn data frames into tibbles
+
+data<-as_tibble(data)
+class(data)
+glimpse(data)
+
+
+### if you're only working in R, you can use the saveRDS() function. Don't do this if you want to export the data
+saveRDS(starwars1,file="StarWarsTibble") # saves R object as a file
+
+sw<-readRDS("StarWarsTibble") # this restores the unreadable saved object to a useful object in the environment
+
+glimpse(sw)
+
+## count NAs
+sum(is.na(sw))
+
+## how many are not NA?
+sum(!is.na(sw))
+
+
+swSp<-sw %>%
+  group_by(species) %>%
+  arrange(desc(mass))
+
+# determine sample size in each group
+swSp %>%
+  summarize(avgMass = mean(mass,na.rm=T),avgHeight=mean(height,na.rm=T),n=n()) %>% # filter out low sample size
+  filter(n>=2) %>%
+  arrange(desc(n))
+
+
+# count helper function
+swSp %>%
+  count(eye_color)
+
+swSp %>%
+  count(wt=height)
+
+
+## useful summary functions
+## uses a lot of base R functions
+
+swSummary<-swSp %>%
+  summarize(avgHeight=mean(height,na.rm=T),
+            medHeight=median(height,na.rm=T),
+            height_SD=sd(height,na.rm=T),
+            height_IQR=IQR(height,na.rm=T),
+            min_height=min(height,na.rm=T),
+            first_height=first(height),
+            n_eyecolors=n_distinct(eye_color,na.rm=T)) %>%
+  filter(n>=2) %>%
+  arrange(desc(n))
+
+
+### grouping with mutate: standardize within groups
+sw2 <-sw %>%
+  group_by(species) %>%
+  mutate(prop_height=height/sum(height)) %>%
+  select(species,height,prop_height)
+sw2 # this doesn't do anything because life sucks!
+
+# pivot_longer/pivot_wider function
+# compare to gather() and spread()
+
+A<-rnorm(n=20,mean=50,sd=10)
+B<-rnorm(n=20,mean=45,sd=10)
+C<-rnorm(n=20,mean=62,sd=10)
+library(tidyr)
+z<-data.frame(A,B,C)
+
+# old:
+long_z<-gather(z,Treatment,Data,A:C)
+
+#new:
+z2<-z %>%
+  pivot_longer(A:C,names_to="treatment",values_to = "data")
+z2
+
+### pivot_wider uses names_from and values_from (opposite of pivot_longer)
