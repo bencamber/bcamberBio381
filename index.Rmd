@@ -31,3 +31,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Homework 8: Data manipulation using the dplyr package
 [dplyr](hw8.html)
+
+### Homework 9: Organizing code with structured programming
+[structured programming](hw9.html)

@@ -41,6 +41,7 @@ calculate_stuff<-function(x_var=runif(10),
 } # end of calculate_stuff
 
 calculate_stuff()
+
 # ------------------------------------------------------
 # FUNCTION: summarize_output
 # description: pull elements from model summary list
@@ -76,3 +77,17 @@ message("Message: Regression graph created!")
   
 } # end of graph_results
 graph_results()
+
+# ------------------------------------------------------
+# FUNCTION: ilr
+# description: 
+# input: stochastic distributions
+# output: summary table of each iteration of the model
+########################################################
+ilr<-function(x=5) {
+
+# function body
+return("Checking...multiple linear regression")
+
+} # end of multiple linear regression
+

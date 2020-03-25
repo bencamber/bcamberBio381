@@ -1,0 +1,55 @@
+---
+title: "hw9"
+author: "Ben Camber"
+date: "3/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### 1. Executing wasp encapsulation rate linear regression from program structure.
+```{r}
+# load libraries
+library(ggplot2)
+# source functions
+source("my functions.R")
+# global variables
+lb17<-rnorm(n=100,mean=90,sd=5)
+g486<-rnorm(n=100,mean=80,sd=7.5)
+# calculate
+temp<-calculate_stuff(x_var = lb17,y_var = g486)
+# extract residuals
+head(summarize_output(z=temp))
+# create graph
+graph_results(x_var=lb17,y_var = g486)
+```
+
+#### 2. Revise code for a different inquiry.
+
+```{r}
+# load libraries
+library(ggplot2)
+library(tidyr)
+# source functions
+source("my functions.R")
+# global variables
+lb17<-rnorm(n=100,mean=90,sd=5)
+g486<-rnorm(n=100,mean=80,sd=7.5)
+wasps<-data.frame(lb17,g486,stringsAsFactors = FALSE)
+wasps2<-gather(wasps,strain,encap_rate)
+# calculate
+temp<-aov(encap_rate~strain,data=wasps2)
+# extract residuals
+head(summarize_output(z=temp))
+# create graph
+encap_plot<-ggplot(data=wasps2,aes(x=strain,y=encap_rate,fill=strain)) + 
+  geom_boxplot()
+encap_plot
+```
+
+#### 3. Creating a for loop to repeat linear regression and compile results. [NOT COMPLETE]
+```{r}
+
+```
