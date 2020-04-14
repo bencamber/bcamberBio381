@@ -1,0 +1,79 @@
+---
+itle: "hw10"
+author: "Ben Camber"
+date: "4/1/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+1. Using a for loop, write a function to calculate the number of zeroes in a numeric vector. Before entering the loop, set up a counter variable counter <- 0. Inside the loop, add 1 to counter each time you have a zero in the matrix (vector?). Finally, use return(counter) for the output.
+``` {r}
+n <- 10 # sample size
+vec<-sample(c(0,1), replace=TRUE, size=n)
+print(vec)
+zct<-0 # counter variable counting the number of zeroes
+
+zilch<-function(vector=vec) {
+for (i in seq_along(vec)) {
+ if(vec[i]==0) zct = zct+1
+
+}
+return(zct)
+}
+zilch(vector=vec)
+```
+
+
+2.Use subsetting instead of a loop to rewrite the function as a single line of code.
+```{r}
+# ------------------------------------------------------
+# FUNCTION: zilch2
+# description: count zeroes in a vector
+# input: vector of 0s and 1s named "vec"
+# output: number of zeroes in "vec"
+####################################################
+n <- 10 # sample size
+vec<-sample(c(0,1), replace=TRUE, size=n)
+print(vec)
+zct<-0 # counter variable counting the number of zeroes
+
+zilch2<-function(vector=vec) {
+  zapato<-vector[vector==0]
+  return(length(zapato))
+}
+zilch2(vector=vec)
+
+
+```
+
+3. Write a function that takes as input two integers representing the number of rows and columns in a matrix. The output is a matrix of these dimensions in which each element is the product of the row number x the column number.
+```{r}
+row<-4
+col<-4
+# ------------------------------------------------------
+# FUNCTION: Matrix calculator
+# description: create a matrix where each value is the product of row and column position
+# input: numbers of rows and columns
+# output: matrix
+########################################################
+matmaker<-function(row=4,col=4) {
+  matrix<-matrix(nrow=row,ncol=col)
+  for(i in 1:nrow(matrix)){
+    for(j in 1:ncol(matrix)){
+    matrix[i,j] <- i*j
+  }
+}
+return(print(matrix))
+}
+matmaker(row=5,col=5)
+```
+
+
+
+
+
+
