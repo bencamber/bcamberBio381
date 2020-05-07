@@ -1,0 +1,90 @@
+---
+title: "hw12"
+author: "Ben Camber"
+date: "5/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Making cool ggplots
+#### Plotting US violent crime rates using USarrests dataset
+```{r}
+library(ggplot2)
+library(ggthemes)
+library(TeachingDemos)
+library(gridExtra)
+
+arrests <- USArrests
+murder <- arrests$Murder
+
+
+z <- ggplot(data=arrests, aes(x=murder,y=arrests$Rape, label=rownames(arrests))) +
+  geom_point(shape=1) +
+  geom_label() +
+  geom_smooth(method=lm) +
+  ggtitle("Relationship between US states' violent crime rates") +
+  labs(x="Murder Rate",y="Rape Rate") 
+
+q <- ggplot(data=arrests, aes(x=murder,y=arrests$Assault, label=rownames(arrests))) +
+  geom_point(shape=1) +
+  geom_label() +
+  geom_smooth(method=lm) +
+  ggtitle("Relationship between US states' violent crime rates") +
+  labs(x="Murder Rate",y="Assault Rate")
+  
+p <- grid.arrange(z, q, ncol=2)
+```
+
+#### Principle component analysis of US states by violent crime rates and population.
+```{r}
+library(ggfortify)
+arrests<-as.data.frame(arrests)
+crime_pca<- prcomp(arrests, scale. = TRUE)
+
+
+df_out <- as.data.frame(crime_pca$x)
+df_out$group <- sapply( strsplit(as.character(row.names(arrests)), "_"), "[[", 1 )
+
+percentage <- round(crime_pca$sdev / sum(crime_pca$sdev) * 100, 2)
+percentage <- paste( colnames(df_out), "(", paste( as.character(percentage), "%", ")", sep="") )
+
+p2 <- ggplot(df_out,aes(x=PC1,y=PC2,label=rownames(df_out)))+
+  geom_point()+
+  geom_label()+
+  ggtitle("PCA of US states by violent crime and population") +
+  xlab(percentage[1]) +
+  ylab(percentage[2])
+p2
+
+```
+
+#### Correlation between urban population and violent crime rates.
+```{r}
+# If there were more than three types of violent crime in this dataset, I would have tried a for loop to loop through linear models of urban pop % vs the various stats. 
+pop <- arrests$UrbanPop
+ass <- arrests$Assault
+rape <- arrests$Rape
+
+
+pA <- ggplot(data=arrests, aes(x=pop,y=murder)) +
+  geom_point(shape=1, color = "red") +
+  geom_smooth(method=lm, color = "red") + 
+  ggtitle("Urban population and violent crime rates for US states")
+
+pB <- ggplot(data=arrests, aes(x=pop,y=ass)) +
+  geom_point(shape=1, color = "magenta") +
+  geom_smooth(method=lm, color = "magenta") 
+  
+
+pC <- ggplot(data=arrests, aes(x=pop,y=rape)) +
+  geom_point(shape=1, color = "black") +
+  geom_smooth(method=lm, color = "black") +
+  labs(x="Percent urban population",y="Rape Rate")
+
+p3 <- grid.arrange(pA, pB, pC, ncol=1)
+
+```
+
